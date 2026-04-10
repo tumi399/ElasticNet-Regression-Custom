@@ -1,64 +1,142 @@
-# 🚗 Elastic Net Regression from Scratch
+````markdown
+# 📉 Elastic Net Regression (From Scratch)
 
 ## 📌 Overview
-This project implements **Elastic Net Regression from scratch** using Python, without relying on machine learning libraries like Scikit-learn.
+This project is a **from-scratch implementation of Elastic Net Regression**, focusing on the core mathematics and optimization process behind the model.
 
-It covers the full machine learning pipeline:
-- Data preprocessing  
-- Feature engineering  
-- Encoding categorical variables  
-- Model training using **Coordinate Descent**  
-- Evaluation and prediction  
-
-The goal is to deeply understand how Elastic Net works internally, instead of just using built-in libraries.
+Instead of relying on machine learning libraries, the goal is to:
+- Understand how **regularization works**
+- Explore how **L1 and L2 penalties interact**
+- Implement and analyze the **Coordinate Descent algorithm**
 
 ---
 
-## ⚙️ Features
+## 🧠 Core Concepts
 
-### 1. Data Preprocessing
-- Cleans raw dataset (removes invalid characters, handles missing values)
-- Handles outliers using **IQR method**
-- Feature engineering:
-  - `km_per_year = kmDriven / (Age + 1)`
-- Standardizes text data (e.g., car model names)
+### Elastic Net Regularization
+Elastic Net combines two types of regularization:
 
-### 2. Encoding
-- **One-hot encoding** for categorical features:
-  - Transmission, Owner, FuelType
-- **Target encoding** for high-cardinality features:
-  - Brand, Model
-- Applies **log transformation** on target variable (`AskPrice`)
+- **L1 (Lasso)**  
+  - Encourages sparsity  
+  - Can shrink some weights exactly to 0 → feature selection  
 
-### 3. Custom Elastic Net Model
-Implemented from scratch with:
-- **Coordinate Descent algorithm**
-- Combined regularization:
-  - L1 (Lasso)
-  - L2 (Ridge)
-- Soft-thresholding function
-- Custom loss function
+- **L2 (Ridge)**  
+  - Penalizes large weights  
+  - Improves stability and reduces variance  
 
-### 4. Model Evaluation
-- Mean Squared Error (MSE)
-- Mean Absolute Error (MAE)
-- R² Score
-
-### 5. Prediction Pipeline
-- Loads trained model from `.pkl`
-- Applies same preprocessing & encoding
-- Generates predictions with error comparison (if ground truth available)
+Elastic Net balances both using a mixing parameter.
 
 ---
-
-## 🧠 How Elastic Net Works
-
-Elastic Net combines L1 and L2 regularization:
-
-- **L1 (Lasso):** Feature selection (drives some weights to 0)
-- **L2 (Ridge):** Stabilizes model and reduces variance
 
 ### Loss Function
 
 ```math
-Loss = MSE + α * (λ * L1 + (1 - λ) * L2)
+Loss = \frac{1}{n} \sum (y - \hat{y})^2 + \alpha \left( \lambda \sum |w_j| + \frac{1 - \lambda}{2} \sum w_j^2 \right)
+````
+
+Where:
+
+* `α` = overall regularization strength
+* `λ` (`l1_ratio`) = balance between L1 and L2
+* `w_j` = model coefficients
+
+---
+
+### Coordinate Descent Optimization
+
+Instead of updating all parameters at once, **Coordinate Descent**:
+
+* Updates **one weight at a time**
+* Keeps other weights fixed
+* Iterates until convergence
+
+#### Key idea:
+
+For each feature ( j ):
+
+1. Compute partial residual
+2. Apply **soft-thresholding**
+3. Update weight ( w_j )
+
+---
+
+### Soft Thresholding
+
+```math
+S(\rho, \alpha) =
+\begin{cases}
+\rho - \alpha & \text{if } \rho > \alpha \\
+\rho + \alpha & \text{if } \rho < -\alpha \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+This is the key mechanism that:
+
+* Shrinks coefficients
+* Forces small values to become exactly **0** (L1 effect)
+
+---
+
+## ⚙️ Implementation Highlights
+
+* Pure **NumPy-based implementation**
+* No use of Scikit-learn for model training
+* Iterative optimization with convergence check:
+
+  * Stops when weight updates are smaller than a tolerance threshold
+* Separate handling of:
+
+  * Bias term
+  * Regularization components
+
+---
+
+## 🔁 Training Process
+
+1. Initialize weights = 0
+2. Repeat until convergence:
+
+   * Update bias term
+   * Loop through each feature:
+
+     * Compute ( \rho )
+     * Apply soft-thresholding
+     * Update weight
+3. Monitor loss during training
+
+---
+
+## 📊 Evaluation Metrics
+
+* Mean Squared Error (MSE)
+* Mean Absolute Error (MAE)
+* R² Score
+
+---
+
+## 🎯 Learning Focus
+
+This project emphasizes:
+
+* The **mathematical foundation** of Elastic Net
+* The behavior of **regularization terms**
+* The mechanics of **Coordinate Descent optimization**
+* How models are trained **step-by-step internally**
+
+---
+
+## 🛠️ Tech Stack
+
+* Python
+* NumPy
+
+---
+
+## 📎 Notes
+
+* This implementation is designed for **learning and clarity**, not production use.
+* Understanding this model makes it easier to work with advanced ML libraries later.
+
+```
+```
