@@ -1,4 +1,4 @@
----
+
 
 # 📉 Elastic Net Regression (From Scratch)
 
@@ -12,7 +12,7 @@ Instead of relying on machine learning libraries, the goal is to:
 * Explore how **L1 and L2 penalties interact**
 * Implement and analyze the **Coordinate Descent algorithm**
 
----
+
 
 ## 🧠 Core Concepts
 
