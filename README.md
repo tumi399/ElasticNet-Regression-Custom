@@ -1,7 +1,6 @@
 
 
-# 📉 Elastic Net Regression (From Scratch)
-
+# 📉 Elastic Net Regression
 ## 📌 Overview
 
 This project is a **from-scratch implementation of Elastic Net Regression**, focusing on the core mathematics and optimization process behind the model.
